@@ -19,10 +19,39 @@ def getSlopeDuo(first, second):
         return 1000
 
 
+def line_intersection(line1, line2):
+    xdiff = (line1[0][0] - line1[1][0], line2[0][0] - line2[1][0])
+    ydiff = (line1[0][1] - line1[1][1], line2[0][1] - line2[1][1]) #Typo was here
+
+    def det(a, b):
+        return a[0] * b[1] - a[1] * b[0]
+
+    div = det(xdiff, ydiff)
+    if div == 0:
+       raise Exception('lines do not intersect')
+
+    d = (det(*line1), det(*line2))
+    x = det(d, xdiff) / div
+    y = det(d, ydiff) / div
+    return x, y
+
 if __name__ == '__main__':
     c = Constants()
     c.readValues()
     cap = cv2.VideoCapture(0)
+
+
+    # mouse callback function
+    def draw_circle(event, x, y, flags, param):
+        if event == cv2.EVENT_LBUTTONDBLCLK:
+            print(x,y)
+
+
+    # Create a black image, a window and bind the function to window
+    img = np.zeros((512, 512, 3), np.uint8)
+    cv2.namedWindow("frame")
+    cv2.setMouseCallback("frame", draw_circle)
+
     while True:
         ret, frame = cap.read()
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
@@ -55,23 +84,21 @@ if __name__ == '__main__':
             cv2.line(frame, (points[0][0], points[0][1]), (points[3][0], points[3][1]), (0, 255, 0), 2)  # Green
             cv2.line(frame, (points[1][0], points[1][1]), (points[2][0], points[2][1]), (255, 255, 0), 2)  # Blue
 
-            x1 = points[0][0]
-            y1 = points[0][1]
-            x0 = points[1][0]
-            y0 = points[1][1]
-            m0 = getSlopeDuo(points[3], points[0])
-            m1 = getSlopeDuo(points[2], points[1])
+            line1 = []
+            line1.append(points[0])
+            line1.append(points[3])
 
+            line2 = []
+            line2.append(points[1])
+            line2.append(points[2])
+
+            x,y = line_intersection(line1, line2)
+
+            print("Points: ", points[0],points[1],points[2],points[3])
             print("Point 1 Slope: ", getSlope(points[0]))
             print("Point 2 Slope: ", getSlope(points[1]))
             print("Point 3 Slope: ", getSlope(points[2]))
             print("Point 4 Slope: ", getSlope(points[3]))
-            print("Line 1 Slope: ", m0)
-            print("Line 2 Slope: ", m1)
-
-            y = (x0 - x1 + y1 * m1 - y0 * m0) / (m1 - m0)
-            x = x0 + m0 * (y - y0)
-
             print("Center Point: (",x,",",y,")")
 
             cv2.circle(frame, (int(x), int(y)), 10, (0, 0, 255), -1)
