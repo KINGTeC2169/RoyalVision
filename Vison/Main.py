@@ -67,6 +67,9 @@ if __name__ == '__main__':
 
         try:
 
+            inRangeY = True
+            inRangeX = True
+
             cntsSorted = sorted(contours, key=lambda x: cv2.contourArea(x))
             cntsSorted.reverse()
             cnt = cntsSorted[0]
@@ -77,12 +80,17 @@ if __name__ == '__main__':
 
             points = []
             for point in box:
+                if point[0] <= 0 or point[0] >= frame.shape[1]:
+                    inRangeX = False
+                if point[1] <= 0 or point[1] >= frame.shape[0]:
+                    inRangeY = False
+
                 points.append(point)
 
             points.sort(key=getSlope, reverse=True)
 
-            cv2.line(frame, (points[0][0], points[0][1]), (points[3][0], points[3][1]), (0, 255, 0), 2)  # Green
-            cv2.line(frame, (points[1][0], points[1][1]), (points[2][0], points[2][1]), (255, 255, 0), 2)  # Blue
+            # cv2.line(frame, (points[0][0], points[0][1]), (points[3][0], points[3][1]), (0, 255, 0), 2)  # Green
+            # cv2.line(frame, (points[1][0], points[1][1]), (points[2][0], points[2][1]), (255, 255, 0), 2)  # Blue
 
             line1 = []
             line1.append(points[0])
@@ -94,14 +102,22 @@ if __name__ == '__main__':
 
             x,y = line_intersection(line1, line2)
 
-            print("Points: ", points[0],points[1],points[2],points[3])
-            print("Point 1 Slope: ", getSlope(points[0]))
-            print("Point 2 Slope: ", getSlope(points[1]))
-            print("Point 3 Slope: ", getSlope(points[2]))
-            print("Point 4 Slope: ", getSlope(points[3]))
-            print("Center Point: (",x,",",y,")")
+            # print("Points: ", points[0],points[1],points[2],points[3])
+            # print("Point 1 Slope: ", getSlope(points[0]))
+            # print("Point 2 Slope: ", getSlope(points[1]))
+            # print("Point 3 Slope: ", getSlope(points[2]))
+            # print("Point 4 Slope: ", getSlope(points[3]))
 
-            cv2.circle(frame, (int(x), int(y)), 10, (0, 0, 255), -1)
+            yaw = -(x - .5 * frame.shape[1]) / (.5 * frame.shape[1])
+
+            if(inRangeX):
+                print("Yaw: ", yaw)
+                cv2.circle(frame, (int(x), int(y)), 10, (0, 0, 255), -1)
+            else:
+                print("NOT IN RANGE!!  DO NOT FIRE!!", yaw)
+                cv2.circle(frame, (int(x), int(y)), 10, (0, 0, 255), -1)
+
+
             cv2.drawContours(frame, [box], 0, (0, 0, 255), 2)
 
         except Exception as err:
