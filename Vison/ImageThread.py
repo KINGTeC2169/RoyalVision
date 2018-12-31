@@ -1,6 +1,6 @@
 from threading import Thread
 import cv2
-from src.Constants import Constants
+from Constants import Constants
 
 
 class ImageThread(Thread):
