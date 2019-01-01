@@ -5,6 +5,10 @@ class Constants:
 
     lowArray = np.array([])
     highArray = np.array([])
+    debug = False
+
+    def isDebug(self):
+        return self.debug
 
     def readValues(self):
         with open('HSV_Values.csv') as csv_file:
