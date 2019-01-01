@@ -5,10 +5,22 @@ class Constants:
 
     lowArray = np.array([])
     highArray = np.array([])
-    debug = False
+
+    '''
+    Debug Modes:
+    0 - No Debugging.  For use on field
+    1 - Display Image.  Print Yaw and Pitch
+    2 - Print All Points and Slopes
+    3 - 1 & 2
+    '''
+
+    debugLevel = 1
 
     def isDebug(self):
-        return self.debug
+        return self.debugLevel > 0
+
+    def getDebug(self):
+        return self.debugLevel
 
     def readValues(self):
         with open('HSV_Values.csv') as csv_file:

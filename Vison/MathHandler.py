@@ -1,19 +1,20 @@
 class MathHandler:
-    def getSlope(point, o):
+
+    def getSlope(self, point):
         try:
             return float(point[1]) / float(point[0])
         except:
             return 1000
 
-    def getSlopeDuo(first, second):
+    def getSlopeDuo(self, first, second):
         try:
             return float(first[1] - second[1]) / float(first[0] - second[0])
         except:
             return 1000
 
-    def line_intersection(line1, line2, line_):
+    def line_intersection(self, line1, line2):
         xdiff = (line1[0][0] - line1[1][0], line2[0][0] - line2[1][0])
-        ydiff = (line1[0][1] - line1[1][1], line2[0][1] - line2[1][1])  # Typo was here
+        ydiff = (line1[0][1] - line1[1][1], line2[0][1] - line2[1][1])
 
         def det(a, b):
             return a[0] * b[1] - a[1] * b[0]

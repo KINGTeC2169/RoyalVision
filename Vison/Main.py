@@ -121,13 +121,9 @@ if __name__ == '__main__':
             # If system is in debug mode, print and display all of this data.  Otherwise, don't
             # in order to keep loop times as low as possible
             if c.isDebug():
-                cv2.line(frame, (points[0][0], points[0][1]), (points[3][0], points[3][1]), (0, 255, 0), 2)  # Green
-                cv2.line(frame, (points[1][0], points[1][1]), (points[2][0], points[2][1]), (255, 255, 0), 2)  # Blue
-                print("Points: ", points[0], points[1], points[2], points[3])
-                print("Point 1 Slope: ", m.getSlope(points[0]))
-                print("Point 2 Slope: ", m.getSlope(points[0]))
-                print("Point 3 Slope: ", m.getSlope(points[0]))
-                print("Point 4 Slope: ", m.getSlope(points[0]))
+                if c.getDebug() is 1 or c.getDebug() is 3:
+                    cv2.line(frame, (points[0][0], points[0][1]), (points[3][0], points[3][1]), (0, 255, 0), 2)  # Green
+                    cv2.line(frame, (points[1][0], points[1][1]), (points[2][0], points[2][1]), (255, 255, 0), 2)  # Blue
                 if inRangeX:
                     print("Yaw: ", yaw)
                     print("Pitch: ", pitch)
@@ -136,12 +132,18 @@ if __name__ == '__main__':
                 else:
                     # Out of range, red center point
                     cv2.circle(frame, (int(x), int(y)), 5, (0, 0, 255), -1)
+                if c.getDebug() > 1:
+                    print("Points: ", points[0], points[1], points[2], points[3])
+                    print("Point 1 Slope: ", m.getSlope(points[0]))
+                    print("Point 2 Slope: ", m.getSlope(points[1]))
+                    print("Point 3 Slope: ", m.getSlope(points[2]))
+                    print("Point 4 Slope: ", m.getSlope(points[3]))
                 cv2.drawContours(frame, [box], 0, (0, 0, 255), 2)
 
         # This catch will occur when no fitting contours are found in the image
         except Exception as err:
             # If in debug mode, print out the error
-            if c.isDebug():
+            if c.getDebug() > 1:
                 print(err)
 
         # If in debug mode, show the image.  If not, keep this disabled, as it slows down the program
