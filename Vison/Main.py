@@ -1,3 +1,5 @@
+from typing import List, Any
+
 import cv2
 import numpy as np
 
@@ -17,7 +19,7 @@ if __name__ == '__main__':
     # CSV that stores the values shared by the programs
     c.readValues()
 
-    # Create VideoCapture object to grab frames from the webcam as color matrices
+    # Create VideoCapture object to grab frames from the USB Camera as color matrices
     cap = cv2.VideoCapture(0)
 
     while True:
@@ -65,7 +67,7 @@ if __name__ == '__main__':
             # Check if any of the points on the bounding box fall on the edge of the image.
             # If this is the case, the target is partially off-screen, and indicate to the
             # InRange variables that this is the case.
-            points = []
+            points: List[Any] = []
 
             # OpenCV doesn't register the BoxPoints object as iterable, so this will fire a false warning on
             # PyCharm.  The next line disables that warning.  If you aren't in PyCharm, it won't do anything.
@@ -122,8 +124,8 @@ if __name__ == '__main__':
             # in order to keep loop times as low as possible
             if c.isDebug():
                 if c.getDebug() is 1 or c.getDebug() is 3:
-                    cv2.line(frame, (points[0][0], points[0][1]), (points[3][0], points[3][1]), (0, 255, 0), 2)  # Green
-                    cv2.line(frame, (points[1][0], points[1][1]), (points[2][0], points[2][1]), (255, 255, 0), 2)  # Blue
+                    cv2.line(frame, (points[0][0], points[0][1]), (points[3][0], points[3][1]), (0, 255, 0), 2)
+                    cv2.line(frame, (points[1][0], points[1][1]), (points[2][0], points[2][1]), (255, 255, 0), 2)
                 if inRangeX:
                     print("Yaw: ", yaw)
                     print("Pitch: ", pitch)
