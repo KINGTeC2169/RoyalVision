@@ -1,2 +1,7 @@
 # RoyalVision
-KING TeC's Vision Software, now integrating Machine Learning (originally designed for Power Up) built on OpenCV 3.1
+KING TeC's Vision Software built on OpenCV 3.5
+
+# Dependencies:
+* Python 3.6 or 3.7
+* OpenCV 3.5+
+* NumPY
